@@ -9,9 +9,9 @@ const listingSchema = new Schema({
     },
     description: String,
     image:{
-        type:  String,
-        default:"https://unsplash.com/photos/modern-living-room-with-natural-light-and-wooden-accents-2cfj0Y5ch00",
-        set:(v)=> v ===""?"https://unsplash.com/photos/modern-living-room-with-natural-light-and-wooden-accents-2cfj0Y5ch00" : v},
+        url: String,
+        filename: String,
+    },
     price: Number,
     location: String,
     country: String,

@@ -42,8 +42,6 @@ main()
     });
 
 async function main() {
-    console.log("NODE_ENV =", process.env.NODE_ENV);
-console.log("DB URL =", process.env.ATLAS_URL);
     await mongoose.connect(dbUrl);
 }
 

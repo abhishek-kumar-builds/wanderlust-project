@@ -4,14 +4,6 @@ if (process.env.NODE_ENV !== "production") {
 
 const dns = require("dns");
 
-dns.resolveSrv(
-  "_mongodb._tcp.cluster0.9jevdtp.mongodb.net",
-  (err, records) => {
-    console.log("DNS TEST:", err);
-    console.log("DNS RECORDS:", records);
-  }
-);
-
 
 
 const express = require("express");

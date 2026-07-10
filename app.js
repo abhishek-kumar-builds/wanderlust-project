@@ -19,31 +19,29 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const Listing = require("./models/listing");
-const initData = require("./init/data");
+const initDB = require("./init");
 
 const dbUrl = process.env.ATLAS_URL;
 
+async function main() {
+    await mongoose.connect(dbUrl);
+}
+
 main()
-  .then(async () => {
-    console.log("connected to DB");
+    .then(async () => {
+        console.log("connected to DB");
 
-    const count = await Listing.countDocuments();
+        const count = await Listing.countDocuments();
 
-    if (count === 0) {
-      console.log("Database is empty. Seeding...");
+        if (count === 0) {
+            await initDB();
+        }
 
-      const data = initData.data.map((obj) => ({
-        ...obj,
-        category: assignCategory(obj), // if you use this function
-        owner: "6a133c66b94de76f237474e3",
-      }));
-
-      await Listing.insertMany(data);
-
-      console.log("Database seeded successfully.");
-    }
-  })
-  .catch(console.error);
+        app.listen(process.env.PORT || 8080, () => {
+            console.log("Server is listening");
+        });
+    })
+    .catch(console.error);
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -114,8 +112,4 @@ app.use((req,res,next) => {
 app.use((err,req,res,next) => {
     let {statusCode =500,message ="something went wrong"} = err;
     res.status(statusCode).render("error.ejs",{err});
-});
-
-app.listen(8080,() =>{
-    console.log("server is listening to port 8080");
 });

@@ -1,9 +1,5 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
-
-const MONGO_URL = process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 function assignCategory(listing) {
     const text = `${listing.title} ${listing.description}`.toLowerCase();
@@ -21,28 +17,18 @@ function assignCategory(listing) {
     return "room";
 }
 
-main()
-    .then(() => {
-        console.log("connected to DB");
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-
-async function main() {
-    await mongoose.connect(MONGO_URL);
-}
-
-const initDB = async () => {
+async function initDB() {
     await Listing.deleteMany({});
-    console.log("old data deleted");
-    initData.data = initData.data.map((obj) => ({
+    console.log("Old data deleted");
+
+    const data = initData.data.map((obj) => ({
         ...obj,
         category: assignCategory(obj),
         owner: "6a133c66b94de76f237474e3",
     }));
-    await Listing.insertMany(initData.data);
-    console.log("data was initialized");
-};
 
-initDB();
+    await Listing.insertMany(data);
+    console.log("Data initialized");
+}
+
+module.exports = initDB;

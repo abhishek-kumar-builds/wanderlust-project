@@ -3,28 +3,33 @@
     <style>
       #filters {
         display: flex;
-        flex-wrap:wrap ;
+        flex-wrap: wrap;
         align-items: center;
       }
 
-      .filters{
+      .filters {
         text-align: center;
         margin-right: 2rem;
         margin-top: 2rem;
         opacity: 0.7;
+        text-decoration: none;
+        color: inherit;
       }
 
-      .filters:hover {
+      .filters:hover,
+      .filters.active {
         opacity: 1;
         cursor: pointer;
+        color: inherit;
+      }
+
+      .filters.active {
+        border-bottom: 2px solid #fe424d;
+        padding-bottom: 0.25rem;
       }
 
       .filter p {
         font-size: 0.8rem;
-      }
-
-      #tax-info {
-        display:none;
       }
 
       .tax-toggle {
@@ -36,52 +41,62 @@
         display: flex;
         align-items: center;
       }
+
+      .no-results {
+        text-align: center;
+        margin-top: 3rem;
+        opacity: 0.7;
+      }
     </style>
+
+    <% const activeCategory = typeof category !== 'undefined' ? category : 'trending'; %>
+    <% const searchQuery = typeof q !== 'undefined' ? q : ''; %>
+
     <div id="filters">
-      <div class="filters">
+      <a href="/listings<%= searchQuery ? '?q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'trending' ? 'active' : '' %>">
         <div><i class="fa-solid fa-fire"></i></div>
         <p>Trending</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=room<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'room' ? 'active' : '' %>">
         <div><i class="fa-solid fa-bed"></i></div>
         <p>Room</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=iconic-cities<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'iconic-cities' ? 'active' : '' %>">
         <div><i class="fa-solid fa-mountain-city"></i></div>
         <p>Iconic Cities</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=mountains<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'mountains' ? 'active' : '' %>">
         <div><i class="fa-solid fa-mountain"></i></div>
         <p>Mountains</p>
-      </div>
-      <div class="filters">
-        <div><i class="fa-brands fa-fort-awesome"></i></i></div>
+      </a>
+      <a href="/listings?category=castles<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'castles' ? 'active' : '' %>">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
         <p>Castles</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=amazing-pools<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'amazing-pools' ? 'active' : '' %>">
         <div><i class="fa-solid fa-person-swimming"></i></div>
         <p>Amazing Pools</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=camping<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'camping' ? 'active' : '' %>">
         <div><i class="fa-solid fa-campground"></i></div>
         <p>Camping</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=farm<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'farm' ? 'active' : '' %>">
         <div><i class="fa-solid fa-seedling"></i></div>
         <p>Farm</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=arctic<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'arctic' ? 'active' : '' %>">
         <div><i class="fa-solid fa-person-skiing-nordic"></i></div>
         <p>Arctic</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=domes<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'domes' ? 'active' : '' %>">
         <div><i class="fa-solid fa-igloo"></i></div>
         <p>Domes</p>
-      </div>
-      <div class="filters">
+      </a>
+      <a href="/listings?category=boats<%= searchQuery ? '&q=' + encodeURIComponent(searchQuery) : '' %>" class="filters <%= activeCategory === 'boats' ? 'active' : '' %>">
         <div><i class="fa-solid fa-sailboat"></i></div>
         <p>Boats</p>
-      </div>
+      </a>
 
       <div class="tax-toggle">
         <div class="form-check-reverse form-switch">
@@ -89,10 +104,16 @@
           <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
         </div>
       </div>
-      
-
     </div>
-    
+
+    <% if (allListings.length === 0) { %>
+      <div class="no-results">
+        <h4>No listings found</h4>
+        <p>Try a different search or category filter.</p>
+        <a href="/listings" class="btn btn-dark mt-2">View all listings</a>
+      </div>
+    <% } %>
+
     <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1 mt-3">
       <% for (let listing of allListings){ %>
         <% let imgSrc = listing.image?.url || listing.image || "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800"; %>
@@ -105,20 +126,20 @@
         <p class="card-text">
           <b><%= listing.title %></b><br />
           &#8377;<%= listing.price.toLocaleString("en-IN") %>/night
-          <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
+          <i class="tax-info" style="display:none;"> &nbsp; &nbsp;+18% GST</i>
         </p>
       </div>
     </div>
     </a>
     <% } %>
     </div>
-  
+
     <script>
       let taxSwitch = document.getElementById("switchCheckDefault");
-      taxSwitch.addEventListener("click",()=>{
+      taxSwitch.addEventListener("click", () => {
         let taxInfo = document.getElementsByClassName("tax-info");
-        for(info of taxInfo) {
-          if(info.style.display != "inline"){
+        for (info of taxInfo) {
+          if (info.style.display != "inline") {
             info.style.display = "inline";
           } else {
             info.style.display = "none";
@@ -128,4 +149,3 @@
     </script>
 
 </body>
-

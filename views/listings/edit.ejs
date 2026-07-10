@@ -45,6 +45,15 @@
         required
       />
       </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="listing[category]" id="category" class="form-control" required>
+          <% const categories = ["room","iconic-cities","mountains","castles","amazing-pools","camping","farm","arctic","domes","boats"]; %>
+          <% for (let cat of categories) { %>
+            <option value="<%= cat %>" <%= listing.category === cat ? 'selected' : '' %>><%= cat.replace(/-/g, ' ') %></option>
+          <% } %>
+        </select>
+      </div>
     
       <button class="btn btn-dark edit-btn mt-3">Edit</button>
     </form>

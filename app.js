@@ -2,10 +2,6 @@ if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 }
 
-const dns = require("dns");
-
-
-
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -52,8 +48,8 @@ const store = MongoStore.create({
     touchAfter: 24*3600,
 });
 
-store.on("error", () =>{
-    console.log("ERROR in MONGO SESSION STORE",err);
+store.on("error", (err) => {
+    console.log("ERROR in MONGO SESSION STORE", err);
 });
 
 const sessionOptions = {
@@ -61,9 +57,10 @@ const sessionOptions = {
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    expires: Date.now() + 7*24*60*60*1000,
-    maxAge: 7*24*60*60*1000,
-    httpOnly: true,
+    cookie: {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+    },
 };
 
 
@@ -84,8 +81,14 @@ app.use((req,res,next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
+    res.locals.q = req.query.q || "";
     next();
 })
+
+app.get("/", (req, res) => res.redirect("/listings"));
+
+app.get("/privacy", (req, res) => res.render("pages/privacy.ejs"));
+app.get("/terms", (req, res) => res.render("pages/terms.ejs"));
 
 app.use("/listings",listings);
 app.use("/", userRouter);

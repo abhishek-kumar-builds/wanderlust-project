@@ -18,20 +18,32 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
+const Listing = require("./models/listing");
+const initData = require("./init/data");
 
 const dbUrl = process.env.ATLAS_URL;
 
 main()
-    .then(() =>{
-        console.log("connected to DB");
-    })
-    .catch((err) =>{
-        console.log(err);
-    });
+  .then(async () => {
+    console.log("connected to DB");
 
-async function main() {
-    await mongoose.connect(dbUrl);
-}
+    const count = await Listing.countDocuments();
+
+    if (count === 0) {
+      console.log("Database is empty. Seeding...");
+
+      const data = initData.data.map((obj) => ({
+        ...obj,
+        category: assignCategory(obj), // if you use this function
+        owner: "6a133c66b94de76f237474e3",
+      }));
+
+      await Listing.insertMany(data);
+
+      console.log("Database seeded successfully.");
+    }
+  })
+  .catch(console.error);
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));

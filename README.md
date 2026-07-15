@@ -8,8 +8,6 @@ A full-stack travel accommodation web application inspired by Airbnb, where user
 
 ## 📸 Preview
 
-> Add screenshots here
-
 ### Home Page
 ![Home](screenshots/home.png)
 
@@ -117,12 +115,12 @@ A full-stack travel accommodation web application inspired by Airbnb, where user
 # 📂 Project Structure
 
 ```
-Wanderlust/
+MAJORPROJECT/
 │
 ├── controllers/
+├── init/
 ├── models/
 ├── routes/
-├── middleware.js
 ├── utils/
 ├── views/
 │   ├── layouts/
@@ -149,13 +147,13 @@ Wanderlust/
 Clone the repository
 
 ```bash
-git clone https://github.com/your-username/wanderlust-project.git
+git clone https://github.com/abhishek-kumar-builds/wanderlust-project.git
 ```
 
 Move into the project directory
 
 ```bash
-cd wanderlust-project
+cd MAJORPROJECT
 ```
 
 Install dependencies
@@ -278,7 +276,7 @@ https://wanderlust-project-taaq.onrender.com/listings
 
 # 💻 GitHub Repository
 
-https://github.com/your-username/wanderlust-project
+https://github.com/abhishek-kumar-builds/wanderlust-project.git
 
 ---
 
@@ -287,10 +285,10 @@ https://github.com/your-username/wanderlust-project
 **Abhishek Kumar**
 
 LinkedIn:
-(Add your LinkedIn URL)
+https://www.linkedin.com/in/abhishek-kumar-builds
 
 GitHub:
-(Add your GitHub URL)
+https://github.com/abhishek-kumar-builds
 
 ---
 
